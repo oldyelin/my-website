@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>全部影像 — Ye Lin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+SC:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --paper: #ffffff;
+    --paper-2: #ededea;
+    --ink: #141413;
+    --ink-soft: #2b2a27;
+    --muted: #8a857c;
+    --hair: rgba(20,20,19,0.14);
+    --hair-strong: rgba(20,20,19,0.45);
+    --serif-en: "EB Garamond", "Source Serif 4", Georgia, serif;
+    --serif-zh: "Noto Serif SC", "Songti SC", "STSong", serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  *{ box-sizing: border-box; }
+  html, body{ margin:0; padding:0; }
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif-zh), var(--serif-en);
+    -webkit-font-smoothing: antialiased;
+  }
+  body[data-lang="en"]{ font-family: var(--serif-en), var(--serif-zh); }
+  body[data-lang="zh"] [data-en]{ display: none !important; }
+  body[data-lang="en"] [data-zh]{ display: none !important; }
+
+  a{ color: inherit; text-decoration: none; }
+  a.under{
+    background-image: linear-gradient(currentColor,currentColor);
+    background-size: 100% 1px; background-repeat: no-repeat; background-position: 0 100%;
+    padding-bottom: 2px; transition: background-size 0.4s ease;
+  }
+  a.under:hover{ background-size: 0% 1px; background-position: 100% 100%; }
+
+  .wrap{ max-width: 1240px; margin: 0 auto; padding: 0 56px; }
+  @media (max-width: 720px){ .wrap{ padding: 0 24px; } }
+
+  header.site{
+    position: sticky; top: 0; z-index: 5;
+    background: var(--paper); border-bottom: 1px solid var(--hair);
+  }
+  header.site .row{
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 22px 0 18px;
+  }
+  .logo{
+    font-family: var(--serif-en); font-style: italic;
+    font-size: 22px; letter-spacing: 0.01em; white-space: nowrap;
+  }
+  .logo .zh{ font-family: var(--serif-zh); font-style: normal; margin-right: 10px; }
+  nav.primary{
+    display: flex; gap: 28px; align-items: baseline;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  nav.primary a{ position: relative; }
+  nav.primary a::after{
+    content:""; position:absolute; left:0; right:100%; bottom:-6px;
+    height:1px; background: currentColor; transition: right 0.35s ease;
+  }
+  nav.primary a:hover::after{ right: 0; }
+  .lang-switch{
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
+    color: var(--ink); cursor: pointer; user-select: none;
+    background: none; border: none; padding: 0;
+  }
+  .lang-switch span.on{ font-weight: 500; }
+  .lang-switch span.off{ color: var(--muted); }
+  .lang-switch .sep{ color: var(--muted); margin: 0 6px; }
+
+  /* page head */
+  section.page-head{
+    padding: 80px 0 48px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .page-head .num{
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted);
+    margin: 0 0 16px;
+  }
+  .page-head h1{
+    font-family: var(--serif-en); font-weight: 400;
+    font-size: clamp(36px, 5vw, 56px);
+    margin: 0; letter-spacing: -0.01em; line-height: 1.05;
+  }
+  body[data-lang="zh"] .page-head h1{ font-family: var(--serif-zh); }
+  .page-head h1 em{ font-style: italic; color: var(--ink-soft); display: block; font-size: 0.42em; letter-spacing: 0.04em; margin-top: 10px; }
+  .page-head .back{
+    margin-top: 24px;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+  }
+
+  /* year groups */
+  section.archive{ padding: 64px 0 96px; }
+  .year-group{ margin-bottom: 64px; }
+  .year-group h2{
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 22px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--hair-strong);
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .year-group h2 .count{ color: var(--muted); font-size: 10px; }
+
+  .videos-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px 28px;
+  }
+  @media (max-width: 900px){ .videos-grid{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 600px){ .videos-grid{ grid-template-columns: 1fr; } }
+
+  a.video-card{ display: block; color: inherit; }
+  a.video-card:hover .thumb{ opacity: 0.86; transition: opacity 0.35s ease; }
+  .video-card figure{ margin: 0; }
+  .video-card .thumb{
+    aspect-ratio: 16 / 9;
+    background: var(--paper-2);
+    position: relative; overflow: hidden;
+  }
+  .video-card .thumb img{
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .video-card .thumb .dur{
+    position: absolute; right: 10px; top: 10px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    color: var(--ink); background: var(--paper); padding: 3px 8px;
+  }
+  .video-card figcaption{ padding: 14px 0 0; }
+  .video-card .meta{
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+    display: flex; justify-content: space-between;
+  }
+  .video-card h4{
+    font-family: var(--serif-en); font-weight: 400; font-size: 19px;
+    margin: 0 0 4px; letter-spacing: -0.005em; line-height: 1.25;
+  }
+  body[data-lang="zh"] .video-card h4{ font-family: var(--serif-zh); }
+  .video-card h4 em{ font-style: italic; color: var(--ink-soft); }
+  .video-card .alt{
+    font-family: var(--serif-en); font-style: italic;
+    color: var(--muted); font-size: 13px; margin: 0;
+  }
+  body[data-lang="zh"] .video-card .alt{ font-family: var(--serif-zh); font-style: normal; }
+
+  /* placeholder for missing thumbs */
+  .hatch{
+    background-image:
+      repeating-linear-gradient(135deg, rgba(20,20,19,0.07) 0 1px, transparent 1px 9px),
+      linear-gradient(#eeeeec, #eeeeec);
+  }
+
+  footer.site{
+    border-top: 1px solid var(--hair);
+    padding: 24px 0 32px;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+  }
+  footer.site .row{ display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+</style>
+</head>
+<body data-lang="zh" data-screen-label="Videos Archive">
+
+<header class="site">
+  <div class="wrap row">
+    <a class="logo" href="Ye Lin.html">
+      <span class="zh">叶林</span><span>Ye Lin</span>
+    </a>
+    <nav class="primary">
+      <a href="Ye Lin.html#news"><span data-zh>动态</span><span data-en>News</span></a>
+      <a href="Ye Lin.html#works"><span data-zh>作品</span><span data-en>Works</span></a>
+      <a href="Videos.html" style="color:var(--ink);"><span data-zh>影像</span><span data-en>Video</span></a>
+      <button class="lang-switch" id="lang-toggle" aria-label="Toggle language">
+        <span class="z">中</span><span class="sep">/</span><span class="e">EN</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<section class="page-head">
+  <div class="wrap">
+    <p class="num"><span data-zh>影像</span><span data-en>Video</span> &nbsp;/&nbsp; <span data-zh>全部作品</span><span data-en>archive</span></p>
+    <h1>
+      <span data-zh>全部影像<em>旅拍 · VLOG · 委制 · 按时间排序</em></span>
+      <span data-en>All <em>Video Works</em><em>travel · vlog · commissions</em></span>
+    </h1>
+    <p class="back">
+      <a class="under" href="Ye Lin.html"><span data-zh>← 返回主页</span><span data-en>← back to home</span></a>
+    </p>
+  </div>
+</section>
+
+<section class="archive">
+  <div class="wrap">
+    <!-- Renders here -->
+    <div id="archive-root"></div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap row">
+    <span>© 2019 — 2026 · <span data-zh>叶 林</span><span data-en>Ye Lin</span></span>
+    <a class="under" href="Ye Lin.html"><span data-zh>返回主页 ↑</span><span data-en>back to home ↑</span></a>
+  </div>
+</footer>
+
+<!--
+  数据更新指南 / How to add a new video:
+
+  在下面的 JSON 里加一条记录即可。页面会自动按 date 倒序排列，并按年份分组。
+  Add a new entry to the JSON below; the page sorts by date desc and groups by year automatically.
+
+  字段说明：
+    date     YYYY-MM (必填，用于排序)
+    titleZH  中文标题
+    titleEN  英文标题（可选）
+    altZH    中文副标题 / 说明
+    altEN    英文副标题
+    category 旅拍 / VLOG / 委制 / 纪录片 (中文显示)
+    categoryEN  travel / vlog / commission / documentary (英文显示)
+    dur      "MM:SS" 时长
+    href     点击跳转的链接
+    thumb    缩略图路径，例如 "assets/thumbs/kyoto.jpg"；留空则显示占位
+-->
+<script type="application/json" id="videos-data">
+[
+  {
+    "date": "2026-03",
+    "titleZH": "三月最后一天的雨",
+    "titleEN": "The Rain on the Last Day of March",
+    "altZH": "留学生活记录",
+    "altEN": "Kyoto · diary",
+    "category": "VLOG",
+    "categoryEN": "VLOG",
+    "dur": "01:37",
+    "href": "works/march-rain.html",
+    "thumb": ""
+  },
+  {
+    "date": "2026-03",
+    "titleZH": "Kiss it Better",
+    "titleEN": "Kiss it Better",
+    "altZH": "Featuring Shiraishi Aoi",
+    "altEN": "Featuring Shiraishi Aoi",
+    "category": "旅拍",
+    "categoryEN": "travel",
+    "dur": "01:28",
+    "href": "works/kiss-it-better.html",
+    "thumb": ""
+  },
+  {
+    "date": "2024-11",
+    "titleZH": "小川さん",
+    "titleEN": "Find Ogawa",
+    "altZH": "Find Ogawa",
+    "altEN": "documentary",
+    "category": "纪录片",
+    "categoryEN": "documentary",
+    "dur": "05:30",
+    "href": "works/find-ogawa.html",
+    "thumb": ""
+  },
+  {
+    "date": "2024-06",
+    "titleZH": "棅香古镇的阳台",
+    "titleEN": "The balcony at Shexian",
+    "altZH": "Anhui",
+    "altEN": "Anhui",
+    "category": "旅拍",
+    "categoryEN": "travel",
+    "dur": "03:20",
+    "href": "works/shexian-balcony.html",
+    "thumb": ""
+  },
+  {
+    "date": "2024-02",
+    "titleZH": "在火车上写信",
+    "titleEN": "Letters from a moving train",
+    "altZH": "上海 → 成都",
+    "altEN": "Shanghai → Chengdu",
+    "category": "VLOG",
+    "categoryEN": "VLOG",
+    "dur": "01:54",
+    "href": "works/letters-from-train.html",
+    "thumb": ""
+  },
+  {
+    "date": "2023-09",
+    "titleZH": "太深的巷子，走过十年",
+    "titleEN": "Ten years through a long lane",
+    "altZH": "上海 · 弄堂",
+    "altEN": "Shanghai longtang",
+    "category": "VLOG",
+    "categoryEN": "VLOG",
+    "dur": "06:00",
+    "href": "works/long-lane.html",
+    "thumb": ""
+  }
+]
+</script>
+
+<script>
+  // Header language toggle
+  (function(){
+    const btn = document.getElementById('lang-toggle');
+    const z = btn.querySelector('.z'); const e = btn.querySelector('.e');
+    function paint(lang){
+      z.classList.toggle('on', lang === 'zh');
+      z.classList.toggle('off', lang !== 'zh');
+      e.classList.toggle('on', lang === 'en');
+      e.classList.toggle('off', lang !== 'en');
+    }
+    function set(lang){
+      document.body.dataset.lang = lang;
+      document.documentElement.lang = lang;
+      paint(lang);
+      try{ localStorage.setItem('yl-lang', lang); }catch(e){}
+    }
+    const saved = (function(){ try{ return localStorage.getItem('yl-lang'); }catch(e){ return null; } })();
+    set(saved || 'zh');
+    btn.addEventListener('click', () => set(document.body.dataset.lang === 'zh' ? 'en' : 'zh'));
+  })();
+
+  // Render archive: parse JSON, sort by date desc, group by year
+  (function(){
+    const data = JSON.parse(document.getElementById('videos-data').textContent);
+    const sorted = [...data].sort((a,b) => (b.date || '').localeCompare(a.date || ''));
+
+    const groups = new Map();
+    for (const item of sorted) {
+      const yr = (item.date || '').slice(0, 4) || '—';
+      if (!groups.has(yr)) groups.set(yr, []);
+      groups.get(yr).push(item);
+    }
+
+    const root = document.getElementById('archive-root');
+    const esc = (s) => String(s == null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+    let html = '';
+    for (const [year, items] of groups) {
+      html += `<div class="year-group">
+        <h2><span>${esc(year)}</span><span class="count">${items.length} ${items.length === 1 ? 'work' : 'works'}</span></h2>
+        <div class="videos-grid">`;
+      for (const it of items) {
+        const month = (it.date || '').slice(5, 7);
+        const dateLabel = year + (month ? ' · ' + month : '');
+        const thumbHtml = it.thumb
+          ? `<div class="thumb"><img src="${esc(it.thumb)}" alt="" loading="lazy"/><span class="dur">${esc(it.dur)}</span></div>`
+          : `<div class="thumb hatch"><span class="dur">${esc(it.dur)}</span></div>`;
+        const titleZH = esc(it.titleZH || '');
+        const titleEN = esc(it.titleEN || it.titleZH || '');
+        const altZH = esc(it.altZH || '');
+        const altEN = esc(it.altEN || '');
+        const catZH = esc(it.category || '');
+        const catEN = esc(it.categoryEN || it.category || '');
+        html += `<a class="video-card" href="${esc(it.href || '#')}">
+          <figure>
+            ${thumbHtml}
+            <figcaption>
+              <div class="meta">
+                <span>${esc(dateLabel)}</span>
+                <span><span data-zh>${catZH}</span><span data-en>${catEN}</span></span>
+              </div>
+              <h4><span data-zh>${titleZH}</span><span data-en><em>${titleEN}</em></span></h4>
+              <p class="alt"><span data-zh>${altZH}</span><span data-en>${altEN}</span></p>
+            </figcaption>
+          </figure>
+        </a>`;
+      }
+      html += '</div></div>';
+    }
+    root.innerHTML = html;
+  })();
+</script>
+
+</body>
+</html>
