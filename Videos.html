@@ -6,7 +6,7 @@
 <title>全部影像 — Ye Lin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+SC:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
 
 <style>
   :root{
@@ -19,6 +19,7 @@
     --hair-strong: rgba(20,20,19,0.45);
     --serif-en: "EB Garamond", "Source Serif 4", Georgia, serif;
     --serif-zh: "Noto Serif SC", "Songti SC", "STSong", serif;
+    --serif-ja: "Noto Serif JP", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", serif;
     --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   }
   *{ box-sizing: border-box; }
@@ -30,8 +31,10 @@
     -webkit-font-smoothing: antialiased;
   }
   body[data-lang="en"]{ font-family: var(--serif-en), var(--serif-zh); }
-  body[data-lang="zh"] [data-en]{ display: none !important; }
-  body[data-lang="en"] [data-zh]{ display: none !important; }
+  body[data-lang="ja"]{ --serif-zh: var(--serif-ja); font-family: var(--serif-ja), var(--serif-en); }
+  body[data-lang="zh"] [data-en], body[data-lang="zh"] [data-ja]{ display: none !important; }
+  body[data-lang="en"] [data-zh], body[data-lang="en"] [data-ja]{ display: none !important; }
+  body[data-lang="ja"] [data-zh], body[data-lang="ja"] [data-en]{ display: none !important; }
 
   a{ color: inherit; text-decoration: none; }
   a.under{
@@ -73,6 +76,7 @@
     color: var(--ink); cursor: pointer; user-select: none;
     background: none; border: none; padding: 0;
   }
+  .lang-switch [data-set-lang]{ cursor: pointer; }
   .lang-switch span.on{ font-weight: 500; }
   .lang-switch span.off{ color: var(--muted); }
   .lang-switch .sep{ color: var(--muted); margin: 0 6px; }
@@ -92,7 +96,7 @@
     font-size: clamp(36px, 5vw, 56px);
     margin: 0; letter-spacing: -0.01em; line-height: 1.05;
   }
-  body[data-lang="zh"] .page-head h1{ font-family: var(--serif-zh); }
+  body:not([data-lang="en"]) .page-head h1{ font-family: var(--serif-zh); }
   .page-head h1 em{ font-style: italic; color: var(--ink-soft); display: block; font-size: 0.42em; letter-spacing: 0.04em; margin-top: 10px; }
   .page-head .back{
     margin-top: 24px;
@@ -151,13 +155,13 @@
     font-family: var(--serif-en); font-weight: 400; font-size: 19px;
     margin: 0 0 4px; letter-spacing: -0.005em; line-height: 1.25;
   }
-  body[data-lang="zh"] .video-card h4{ font-family: var(--serif-zh); }
+  body:not([data-lang="en"]) .video-card h4{ font-family: var(--serif-zh); }
   .video-card h4 em{ font-style: italic; color: var(--ink-soft); }
   .video-card .alt{
     font-family: var(--serif-en); font-style: italic;
     color: var(--muted); font-size: 13px; margin: 0;
   }
-  body[data-lang="zh"] .video-card .alt{ font-family: var(--serif-zh); font-style: normal; }
+  body:not([data-lang="en"]) .video-card .alt{ font-family: var(--serif-zh); font-style: normal; }
 
   /* placeholder for missing thumbs */
   .hatch{
@@ -179,29 +183,30 @@
 
 <header class="site">
   <div class="wrap row">
-    <a class="logo" href="Ye Lin.html">
+    <a class="logo" href="index.html">
       <span class="zh">叶林</span><span>Ye Lin</span>
     </a>
     <nav class="primary">
-      <a href="Ye Lin.html#news"><span data-zh>动态</span><span data-en>News</span></a>
-      <a href="Ye Lin.html#works"><span data-zh>作品</span><span data-en>Works</span></a>
-      <a href="Videos.html" style="color:var(--ink);"><span data-zh>影像</span><span data-en>Video</span></a>
-      <button class="lang-switch" id="lang-toggle" aria-label="Toggle language">
-        <span class="z">中</span><span class="sep">/</span><span class="e">EN</span>
-      </button>
+      <a href="index.html#news"><span data-zh>动态</span><span data-ja>ニュース</span><span data-en>News</span></a>
+      <a href="index.html#works"><span data-zh>作品</span><span data-ja>作品</span><span data-en>Works</span></a>
+      <a href="Videos.html" style="color:var(--ink);"><span data-zh>影像</span><span data-ja>映像</span><span data-en>Video</span></a>
+      <span class="lang-switch" id="lang-toggle">
+        <span class="z" data-set-lang="zh" role="button" tabindex="0">中</span><span class="sep">/</span><span class="e" data-set-lang="en" role="button" tabindex="0">EN</span><span class="sep">/</span><span class="j" data-set-lang="ja" role="button" tabindex="0">日</span>
+      </span>
     </nav>
   </div>
 </header>
 
 <section class="page-head">
   <div class="wrap">
-    <p class="num"><span data-zh>影像</span><span data-en>Video</span> &nbsp;/&nbsp; <span data-zh>全部作品</span><span data-en>archive</span></p>
+    <p class="num"><span data-zh>影像</span><span data-ja>映像</span><span data-en>Video</span> &nbsp;/&nbsp; <span data-zh>全部作品</span><span data-ja>アーカイブ</span><span data-en>archive</span></p>
     <h1>
       <span data-zh>全部影像<em>旅拍 · VLOG · 委制 · 按时间排序</em></span>
+      <span data-ja>すべての映像<em>旅の記録 · VLOG · 受託制作</em></span>
       <span data-en>All <em>Video Works</em><em>travel · vlog · commissions</em></span>
     </h1>
     <p class="back">
-      <a class="under" href="Ye Lin.html"><span data-zh>← 返回主页</span><span data-en>← back to home</span></a>
+      <a class="under" href="index.html"><span data-zh>← 返回主页</span><span data-ja>← ホームへ戻る</span><span data-en>← back to home</span></a>
     </p>
   </div>
 </section>
@@ -216,7 +221,7 @@
 <footer class="site">
   <div class="wrap row">
     <span>© 2019 — 2026 · <span data-zh>叶 林</span><span data-en>Ye Lin</span></span>
-    <a class="under" href="Ye Lin.html"><span data-zh>返回主页 ↑</span><span data-en>back to home ↑</span></a>
+    <a class="under" href="index.html"><span data-zh>返回主页 ↑</span><span data-ja>ホームへ戻る ↑</span><span data-en>back to home ↑</span></a>
   </div>
 </footer>
 
@@ -319,12 +324,15 @@
   // Header language toggle
   (function(){
     const btn = document.getElementById('lang-toggle');
-    const z = btn.querySelector('.z'); const e = btn.querySelector('.e');
+    const z = btn.querySelector('.z'); const e = btn.querySelector('.e'); const j = btn.querySelector('.j');
+    const ORDER = ['zh','en','ja'];
     function paint(lang){
       z.classList.toggle('on', lang === 'zh');
       z.classList.toggle('off', lang !== 'zh');
       e.classList.toggle('on', lang === 'en');
       e.classList.toggle('off', lang !== 'en');
+      j.classList.toggle('on', lang === 'ja');
+      j.classList.toggle('off', lang !== 'ja');
     }
     function set(lang){
       document.body.dataset.lang = lang;
@@ -334,7 +342,12 @@
     }
     const saved = (function(){ try{ return localStorage.getItem('yl-lang'); }catch(e){ return null; } })();
     set(saved || 'zh');
-    btn.addEventListener('click', () => set(document.body.dataset.lang === 'zh' ? 'en' : 'zh'));
+    btn.querySelectorAll('[data-set-lang]').forEach((el) => {
+      el.addEventListener('click', () => set(el.dataset.setLang));
+      el.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); set(el.dataset.setLang); }
+      });
+    });
   })();
 
   // Render archive: parse JSON, sort by date desc, group by year
@@ -367,20 +380,23 @@
           : `<div class="thumb hatch"><span class="dur">${esc(it.dur)}</span></div>`;
         const titleZH = esc(it.titleZH || '');
         const titleEN = esc(it.titleEN || it.titleZH || '');
+        const titleJA = esc(it.titleJA || it.titleZH || '');
         const altZH = esc(it.altZH || '');
         const altEN = esc(it.altEN || '');
+        const altJA = esc(it.altJA || it.altZH || '');
         const catZH = esc(it.category || '');
         const catEN = esc(it.categoryEN || it.category || '');
+        const catJA = esc(it.categoryJA || it.category || '');
         html += `<a class="video-card" href="${esc(it.href || '#')}">
           <figure>
             ${thumbHtml}
             <figcaption>
               <div class="meta">
                 <span>${esc(dateLabel)}</span>
-                <span><span data-zh>${catZH}</span><span data-en>${catEN}</span></span>
+                <span><span data-zh>${catZH}</span><span data-ja>${catJA}</span><span data-en>${catEN}</span></span>
               </div>
-              <h4><span data-zh>${titleZH}</span><span data-en><em>${titleEN}</em></span></h4>
-              <p class="alt"><span data-zh>${altZH}</span><span data-en>${altEN}</span></p>
+              <h4><span data-zh>${titleZH}</span><span data-ja>${titleJA}</span><span data-en><em>${titleEN}</em></span></h4>
+              <p class="alt"><span data-zh>${altZH}</span><span data-ja>${altJA}</span><span data-en>${altEN}</span></p>
             </figcaption>
           </figure>
         </a>`;

@@ -6,7 +6,7 @@
 <title>叶林 — Ye Lin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+SC:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -24,6 +24,7 @@
 
     --serif-en: "EB Garamond", "Source Serif 4", Georgia, serif;
     --serif-zh: "Noto Serif SC", "Songti SC", "STSong", serif;
+    --serif-ja: "Noto Serif JP", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", serif;
     --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   }
 
@@ -41,9 +42,12 @@
   }
   body[data-lang="en"]{ font-family: var(--serif-en), var(--serif-zh); }
 
-  /* Bilingual visibility */
-  body[data-lang="zh"] [data-en]{ display: none !important; }
-  body[data-lang="en"] [data-zh]{ display: none !important; }
+  body[data-lang="ja"]{ --serif-zh: var(--serif-ja); font-family: var(--serif-ja), var(--serif-en); }
+
+  /* Trilingual visibility */
+  body[data-lang="zh"] [data-en], body[data-lang="zh"] [data-ja]{ display: none !important; }
+  body[data-lang="en"] [data-zh], body[data-lang="en"] [data-ja]{ display: none !important; }
+  body[data-lang="ja"] [data-zh], body[data-lang="ja"] [data-en]{ display: none !important; }
 
   ::selection{ background: var(--ink); color: var(--paper); }
 
@@ -111,6 +115,7 @@
     user-select: none;
     background: none; border: none; padding: 0;
   }
+  .lang-switch [data-set-lang]{ cursor: pointer; }
   .lang-switch span.on{ font-weight: 500; }
   .lang-switch span.off{ color: var(--muted); }
   .lang-switch .sep{ color: var(--muted); margin: 0 6px; }
@@ -165,6 +170,7 @@
     font-weight: 400;
     padding-right: 0.42em;
   }
+  body[data-lang="ja"] .hero-role{ font-family: var(--serif-ja), var(--serif-en); }
   body[data-lang="en"] .hero-role{
     font-family: var(--serif-en);
     font-style: italic;
@@ -248,7 +254,7 @@
     color: var(--ink-soft);
     margin: 18px 0 36px;
   }
-  body[data-lang="zh"] .role{ font-family: var(--serif-zh); font-style: normal; }
+  body:not([data-lang="en"]) .role{ font-family: var(--serif-zh); font-style: normal; }
 
   .hero-intro{
     max-width: 56ch;
@@ -273,7 +279,7 @@
   }
   .hero-meta dt{ margin-bottom: 4px; }
   .hero-meta dd{ margin: 0; color: var(--ink); font-family: var(--serif-en); font-style: italic; font-size: 15px; letter-spacing: 0; text-transform: none; }
-  body[data-lang="zh"] .hero-meta dd{ font-family: var(--serif-zh); font-style: normal; }
+  body:not([data-lang="en"]) .hero-meta dd{ font-family: var(--serif-zh); font-style: normal; }
 
   /* ----------------- Section frame ----------------- */
   section.block{
@@ -305,7 +311,7 @@
     line-height: 1.1;
     margin: 0;
   }
-  body[data-lang="zh"] .section-head h2{ font-family: var(--serif-zh); }
+  body:not([data-lang="en"]) .section-head h2{ font-family: var(--serif-zh); }
   .section-head h2 em{ font-style: italic; color: var(--ink-soft); display: block; font-size: 0.5em; letter-spacing: 0.04em; margin-top: 8px; }
 
   /* ----------------- About ----------------- */
@@ -325,7 +331,7 @@
     border-left: 1px solid var(--ink);
     padding-left: 22px;
   }
-  body[data-lang="zh"] .about-body .pull{ font-family: var(--serif-zh); font-style: normal; }
+  body:not([data-lang="en"]) .about-body .pull{ font-family: var(--serif-zh); font-style: normal; }
   .about-body .body p{
     font-size: 17px;
     line-height: 1.75;
@@ -337,10 +343,11 @@
   /* ----------------- Works ----------------- */
   .works-grid{
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 72px 48px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 56px 36px;
   }
-  @media (max-width: 800px){ .works-grid{ grid-template-columns: 1fr; gap: 56px; } }
+  @media (max-width: 900px){ .works-grid{ grid-template-columns: repeat(2, 1fr); gap: 48px 32px; } }
+  @media (max-width: 600px){ .works-grid{ grid-template-columns: 1fr; gap: 56px; } }
   .work figure{ margin: 0; }
   .work, a.work{ display: block; color: inherit; text-decoration: none; }
   .work .cover{
@@ -381,7 +388,7 @@
     letter-spacing: -0.005em;
     margin: 0 0 4px;
   }
-  body[data-lang="zh"] .work h3{ font-family: var(--serif-zh); }
+  body:not([data-lang="en"]) .work h3{ font-family: var(--serif-zh); }
   .work h3 em{ font-style: italic; color: var(--ink-soft); }
   .work .alt{
     font-family: var(--serif-en);
@@ -390,7 +397,7 @@
     font-size: 16px;
     margin-bottom: 14px;
   }
-  body[data-lang="zh"] .work .alt{ font-family: var(--serif-en); }
+  body:not([data-lang="en"]) .work .alt{ font-family: var(--serif-en); }
   .work p.synopsis{
     font-size: 15px;
     color: var(--ink-soft);
@@ -461,7 +468,7 @@
     font-size: 30px; line-height: 1.1; margin: 0;
     letter-spacing: -0.005em;
   }
-  body[data-lang="zh"] .films-divider h3{ font-family: var(--serif-zh); }
+  body:not([data-lang="en"]) .films-divider h3{ font-family: var(--serif-zh); }
   .films-divider h3 em{ font-style: italic; color: var(--ink-soft); font-size: 0.6em; display: block; margin-top: 6px; letter-spacing: 0.04em; }
 
   /* ----------------- Video works (lighter) ----------------- */
@@ -508,7 +515,7 @@
     font-family: var(--serif-en); font-weight: 400; font-size: 19px;
     margin: 0 0 4px; letter-spacing: -0.005em; line-height: 1.25;
   }
-  body[data-lang="zh"] .video-card h4{ font-family: var(--serif-zh); }
+  body:not([data-lang="en"]) .video-card h4{ font-family: var(--serif-zh); }
   .video-card h4 em{ font-style: italic; color: var(--ink-soft); }
   .video-card .alt{
     font-family: var(--serif-en); font-style: italic;
@@ -537,13 +544,13 @@
     font-family: var(--serif-en); font-weight: 400; font-size: 22px;
     margin: 0; letter-spacing: -0.005em;
   }
-  body[data-lang="zh"] .photo-strip-head h3{ font-family: var(--serif-zh); }
+  body:not([data-lang="en"]) .photo-strip-head h3{ font-family: var(--serif-zh); }
   .photo-strip-head h3 em{ font-style: italic; color: var(--muted); margin-left: 8px; font-size: 0.85em; }
   .photo-strip-head .aside{
     font-family: var(--serif-en); font-style: italic;
     color: var(--muted); font-size: 13px; max-width: 38ch; text-align: right;
   }
-  body[data-lang="zh"] .photo-strip-head .aside{ font-family: var(--serif-zh); font-style: normal; }
+  body:not([data-lang="en"]) .photo-strip-head .aside{ font-family: var(--serif-zh); font-style: normal; }
   .photo-row{
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -590,7 +597,7 @@
     color: var(--ink);
     line-height: 1.25;
   }
-  body[data-lang="zh"] .writing-list .ttl{ font-family: var(--serif-zh); font-style: normal; }
+  body:not([data-lang="en"]) .writing-list .ttl{ font-family: var(--serif-zh); font-style: normal; }
   .writing-list .ttl em{ color: var(--ink-soft); }
   .writing-list .venue{
     font-family: var(--mono);
@@ -644,7 +651,7 @@
     transition: background-size 0.4s ease;
   }
   .news-list .t a:hover{ background-size: 100% 1px; }
-  body[data-lang="zh"] .news-list .t{ font-family: var(--serif-zh); }
+  body:not([data-lang="en"]) .news-list .t{ font-family: var(--serif-zh); }
   .news-list .t em{ font-style: italic; color: var(--ink-soft); }
   .news-more{
     margin-top: 28px;
@@ -675,7 +682,7 @@
     line-height: 1.3;
     margin: 0 0 8px;
   }
-  body[data-lang="zh"] .news-item h4{ font-family: var(--serif-zh); font-style: normal; }
+  body:not([data-lang="en"]) .news-item h4{ font-family: var(--serif-zh); font-style: normal; }
   .news-item p{
     font-size: 14px;
     color: var(--ink-soft);
@@ -729,7 +736,7 @@
     margin: 0;
     letter-spacing: -0.015em;
   }
-  body[data-lang="zh"] .contact-grid h2{ font-family: var(--serif-zh); }
+  body:not([data-lang="en"]) .contact-grid h2{ font-family: var(--serif-zh); }
   .contact-grid h2 em{ font-style: italic; color: var(--ink-soft); display: block; font-size: 0.45em; margin-top: 10px; letter-spacing: 0.04em; }
   .contact-list{
     list-style: none; padding: 0; margin: 0;
@@ -756,7 +763,7 @@
     font-style: italic;
     font-size: 18px;
   }
-  body[data-lang="zh"] .contact-list .v{ font-family: var(--serif-zh); font-style: normal; }
+  body:not([data-lang="en"]) .contact-list .v{ font-family: var(--serif-zh); font-style: normal; }
 
   /* ----------------- Footer ----------------- */
   footer.site{
@@ -809,16 +816,16 @@
 <header class="site">
   <div class="wrap row">
     <a class="logo" href="#top" id="top">
-      <span class="zh" data-zh>叶林</span><span data-en>Ye Lin</span>
-      <span data-zh style="font-style:italic;font-family:var(--serif-en);color:var(--muted);font-size:14px;margin-left:6px">Ye Lin</span>
+      <span class="zh" data-zh>叶林</span><span class="zh" data-ja>葉林</span><span data-en>Ye Lin</span>
+      <span data-zh style="font-style:italic;font-family:var(--serif-en);color:var(--muted);font-size:14px;margin-left:6px">Ye Lin</span><span data-ja style="font-style:italic;font-family:var(--serif-en);color:var(--muted);font-size:14px;margin-left:6px">Ye Lin</span>
     </a>
     <nav class="primary">
-      <a href="#news"><span data-zh>动态</span><span data-en>News</span></a>
-      <a href="#profile"><span data-zh>简介</span><span data-en>Profile</span></a>
-      <a href="#works"><span data-zh>作品</span><span data-en>Works</span></a>
-      <button class="lang-switch" id="lang-toggle" aria-label="Toggle language">
-        <span class="z">中</span><span class="sep">/</span><span class="e">EN</span>
-      </button>
+      <a href="#news"><span data-zh>动态</span><span data-ja>ニュース</span><span data-en>News</span></a>
+      <a href="#profile"><span data-zh>简介</span><span data-ja>プロフィール</span><span data-en>Profile</span></a>
+      <a href="#works"><span data-zh>作品</span><span data-ja>作品</span><span data-en>Works</span></a>
+      <span class="lang-switch" id="lang-toggle">
+        <span class="z" data-set-lang="zh" role="button" tabindex="0">中</span><span class="sep">/</span><span class="e" data-set-lang="en" role="button" tabindex="0">EN</span><span class="sep">/</span><span class="j" data-set-lang="ja" role="button" tabindex="0">日</span>
+      </span>
     </nav>
   </div>
 </header>
@@ -831,6 +838,7 @@
     <img class="hero-signature" src="assets/yelin-signature.png" alt="Ye Lin" />
     <p class="hero-role">
       <span data-zh>导演&nbsp;&nbsp;&nbsp;摄影师</span>
+      <span data-ja>映画監督&nbsp;&nbsp;&nbsp;写真家</span>
       <span data-en>Director&nbsp;&nbsp;&nbsp;Photographer</span>
     </p>
     <nav class="hero-nav" aria-label="primary">
@@ -844,7 +852,7 @@
 <section class="block" id="news">
   <div class="wrap">
     <div class="section-head">
-      <p class="num"><span data-zh style="font-size: 30px; color: rgb(20, 20, 19); font-family: &quot;Noto Serif SC&quot;">动态</span><span data-en>News</span></p>
+      <p class="num"><span data-zh style="font-size: 30px; color: rgb(20, 20, 19); font-family: &quot;Noto Serif SC&quot;">动态</span><span data-ja style="font-size: 30px; color: rgb(20, 20, 19);">ニュース</span><span data-en>News</span></p>
       <!-- News heading -->
       <h2>
         <span data-zh></span>
@@ -853,20 +861,22 @@
     </div>
     <ul class="news-list">
       <li>
-        <p class="d">2026 · 03 · 13</p>
+        <p class="d">2026 · 08 · 28</p>
         <p class="t">
-          <a href="https://www.xiaohongshu.com/explore/69aebc10000000001a01d7b7?xsec_token=YBZMvOPlN1F2o6JrTPRPANQ6jqwtYQVD0lUKXLmXu_ZIs%3D&xsec_source=pc_creatormng" target="_blank" rel="noopener">
-            <span data-zh>发布旅拍短片《Kiss it Better》</span>
-            <span data-en>Released travel short “Kiss it Better”</span>
+          <a href="https://mp.weixin.qq.com/s/j15vUE79cqNW1B6lgjYz_Q" target="_blank" rel="noopener">
+            <span data-zh>短片《Selfie》入围平潭IM两岸青年影展主竞赛单元</span>
+            <span data-ja>短編『Selfie』が平潭IM両岸青年映画祭コンペティション部門に入選</span>
+            <span data-en>“Selfie” selected for the main competition, Pingtan IM Youth Film Festival</span>
           </a>
         </p>
       </li>
       <li>
-        <p class="d">2026 · 01 · 28</p>
+        <p class="d">2026 · 08 · 27</p>
         <p class="t">
-          <a href="#" onclick="alert('Coming Soon...'); return false;">
-            <span data-zh>完成《Selfie》后期制作</span>
-            <span data-en>Finished post-production on “Selfie”</span>
+          <a href="https://www.instagram.com/p/DciHP6pTkFs/" target="_blank" rel="noopener">
+            <span data-zh>纪录片《この先、どうすればいいのだろう》入围国際平和映画祭</span>
+            <span data-ja>ドキュメンタリー『この先、どうすればいいのだろう』が国際平和映画祭に入選</span>
+            <span data-en>Documentary “Kono Saki” selected for the Intl. Peace Film Festival</span>
           </a>
         </p>
       </li>
@@ -875,13 +885,14 @@
         <p class="t">
           <a href="https://www.yubari-fanta.com/2025yf/film/kasetto" target="_blank" rel="noopener">
             <span data-zh>短片《カセット》入围夕张国际奇幻电影节短片竞赛单元</span>
+            <span data-ja>短編『カセット』がゆうばり国際ファンタスティック映画祭 短編コンペティションに入選</span>
             <span data-en>Short “Cassette” selected for Yubari Intl. Fantastic Film Festival</span>
           </a>
         </p>
       </li>
     </ul>
     <p class="news-more">
-      <a class="under" href="News.html"><span data-zh>更多 →</span><span data-en>more →</span></a>
+      <a class="under" href="News.html"><span data-zh>更多 →</span><span data-ja>もっと見る →</span><span data-en>more →</span></a>
     </p>
   </div>
 </section>
@@ -890,7 +901,7 @@
 <section class="block" id="works" style="padding-bottom:0;border-bottom:0;">
   <div class="wrap">
     <div class="section-head">
-      <p class="num"><span data-zh style="font-size: 30px; color: rgb(20, 20, 19); font-family: &quot;Noto Serif SC&quot;">电影</span><span data-en>Works</span></p>
+      <p class="num"><span data-zh style="font-size: 30px; color: rgb(20, 20, 19); font-family: &quot;Noto Serif SC&quot;">电影</span><span data-ja style="font-size: 30px; color: rgb(20, 20, 19);">映画</span><span data-en>Works</span></p>
       <h2>
         <span data-zh></span>
         <span data-en>Works</span>
@@ -903,15 +914,56 @@
 <section class="block" id="films" style="padding-top:24px;">
   <div class="wrap">
     <div class="films-divider" style="margin-top:0;padding-top:0;border-top:0;">
-      <p class="num"><span data-zh></span><span data-en>Films</span></p>
+      <p class="num"><span data-zh></span><span data-ja></span><span data-en>Films</span></p>
       <h3>
         <span data-zh></span>
+        <span data-ja>短編映画</span>
         <span data-en>Narrative shorts</span>
       </h3>
     </div>
 
     <div class="works-grid">
       <!-- FILM 1 -->
+      <a class="work" href="https://mp.weixin.qq.com/s/j15vUE79cqNW1B6lgjYz_Q" target="_blank" rel="noopener">
+        <figure>
+          <div class="cover" style="background-image:url('assets/posters/selfie.jpg')"></div>
+          <figcaption>
+            <div class="meta">
+              <span>2026</span><span>20 MIN</span>
+            </div>
+            <h3>
+              <span data-zh>Selfie</span>
+              <span data-ja>Selfie</span>
+              <span data-en><em>Selfie</em></span>
+            </h3>
+            <p class="alt" data-zh><em>自拍</em></p>
+            <p class="alt" data-ja>セルフィー</p>
+            <p class="alt" data-en>自拍</p>
+          </figcaption>
+        </figure>
+      </a>
+
+      <!-- FILM 2 -->
+      <a class="work" href="https://www.instagram.com/p/DciHP6pTkFs/" target="_blank" rel="noopener">
+        <figure>
+          <div class="cover" style="background-image:url('assets/posters/kono-saki.jpg')"></div>
+          <figcaption>
+            <div class="meta">
+              <span>2026</span><span>4 MIN</span>
+            </div>
+            <h3>
+              <span data-zh>この先、どうすればいいのだろう</span>
+              <span data-ja>この先、どうすればいいのだろう</span>
+              <span data-en><em>Kono Saki</em></span>
+            </h3>
+            <p class="alt" data-zh><em>空椅</em></p>
+            <p class="alt" data-ja>空椅</p>
+            <p class="alt" data-en>空椅</p>
+          </figcaption>
+        </figure>
+      </a>
+
+      <!-- FILM 3 -->
       <a class="work" href="https://www.yubari-fanta.com/2025yf/film/kasetto" target="_blank" rel="noopener">
         <figure>
           <div class="cover" style="background-image:url('assets/posters/cassette.jpg')"></div>
@@ -921,28 +973,12 @@
             </div>
             <h3>
               <span data-zh>カセット</span>
+              <span data-ja>カセット</span>
               <span data-en><em>Cassette</em></span>
             </h3>
             <p class="alt" data-zh><em>磁带</em></p>
+            <p class="alt" data-ja>Cassette</p>
             <p class="alt" data-en>カセット</p>
-          </figcaption>
-        </figure>
-      </a>
-
-      <!-- FILM 2 -->
-      <a class="work" href="#" onclick="alert('Coming Soon...'); return false;">
-        <figure>
-          <div class="cover" style="background-image:url('assets/posters/selfie.jpg')"></div>
-          <figcaption>
-            <div class="meta">
-              <span>2026</span><span>25 MIN</span>
-            </div>
-            <h3>
-              <span data-zh>Selfie</span>
-              <span data-en><em>Selfie</em></span>
-            </h3>
-            <p class="alt" data-zh><em>自拍</em></p>
-            <p class="alt" data-en>自拍</p>
           </figcaption>
         </figure>
       </a>
@@ -954,9 +990,10 @@
 <section class="videos block" id="videos" style="padding-top:88px;padding-bottom:80px;">
   <div class="wrap">
     <div class="films-divider" style="margin-top:0;padding-top:0;border-top:0;margin-bottom:36px;">
-      <p class="num"><span data-zh style="font-size: 30px; color: rgb(20, 20, 19); font-family: &quot;Noto Serif SC&quot;">旅拍/VLOG/委制</span><span data-en>Video</span></p>
+      <p class="num"><span data-zh style="font-size: 30px; color: rgb(20, 20, 19); font-family: &quot;Noto Serif SC&quot;">旅拍/VLOG/委制</span><span data-ja style="font-size: 30px; color: rgb(20, 20, 19);">旅動画/VLOG/受託制作</span><span data-en>Video</span></p>
       <h3>
         <span data-zh></span>
+        <span data-ja>旅の記録・VLOG・受託制作</span>
         <span data-en>Travel notes, vlog &amp; commissions</span>
       </h3>
     </div>
@@ -966,13 +1003,14 @@
         <figure>
           <div class="thumb" style="background-image:url('assets/thumbs/march-rain.jpg');background-size:cover;background-position:center;">
             <span class="lbl" data-zh>
-</span><span class="lbl" data-en>thumb</span>
+</span><span class="lbl" data-ja></span><span class="lbl" data-en>thumb</span>
             <span class="dur">01:37</span>
           </div>
           <figcaption>
             <div class="meta"><span>2026 · 03</span><span>VLOG</span></div>
-            <h4><span data-zh>三月最后一天的雨</span><span data-en><em>Six days in Kyoto, alone</em></span></h4>
+            <h4><span data-zh>三月最后一天的雨</span><span data-ja>三月最後の日の雨</span><span data-en><em>Six days in Kyoto, alone</em></span></h4>
             <p class="alt" data-zh>留学生活记录</p>
+            <p class="alt" data-ja>留学生活の記録</p>
             <p class="alt" data-en>京都</p>
           </figcaption>
         </figure>
@@ -982,29 +1020,31 @@
         <figure>
           <div class="thumb" style="background-image:url('assets/thumbs/kiss-it-better.jpg');background-size:cover;background-position:center;">
             <span class="lbl" data-zh>
-</span><span class="lbl" data-en>thumb</span>
+</span><span class="lbl" data-ja></span><span class="lbl" data-en>thumb</span>
             <span class="dur">01:28</span>
           </div>
           <figcaption>
             <div class="meta"><span>2026 · 03</span><span>旅拍</span></div>
-            <h4><span data-zh>Kiss it Better</span><span data-en><em>Three p.m. in Hokkaido</em></span></h4>
+            <h4><span data-zh>Kiss it Better</span><span data-ja>Kiss it Better</span><span data-en><em>Three p.m. in Hokkaido</em></span></h4>
             <p class="alt" data-zh>Featuring Shiraishi Aoi</p>
+            <p class="alt" data-ja>Featuring Shiraishi Aoi</p>
             <p class="alt" data-en>北海道</p>
           </figcaption>
         </figure>
       </a>
 
-      <a class="video-card" href="https://www.youtube.com/watch?v=dt7Q7a7wXaE" target="_blank" rel="noopener">
+      <a class="video-card" href="https://youtu.be/iJMB4PTsLJ0" target="_blank" rel="noopener">
         <figure>
           <div class="thumb" style="background-image:url('assets/thumbs/ogawa.jpg');background-size:cover;background-position:center;">
             <span class="lbl" data-zh>
-</span><span class="lbl" data-en>thumb</span>
+</span><span class="lbl" data-ja></span><span class="lbl" data-en>thumb</span>
             <span class="dur">03:31</span>
           </div>
           <figcaption>
             <div class="meta"><span>2025 · 12</span><span>纪录片</span></div>
-            <h4><span data-zh>小川さん</span><span data-en><em>A Quiet Reading</em> · brand short</span></h4>
+            <h4><span data-zh>この先どうすればいいのだろう</span><span data-ja>この先どうすればいいのだろう</span><span data-en><em>A Quiet Reading</em> · brand short</span></h4>
             <p class="alt" data-zh>Find Ogawa</p>
+            <p class="alt" data-ja>Find Ogawa</p>
             <p class="alt" data-en>Aesop · 上海</p>
           </figcaption>
         </figure>
@@ -1014,13 +1054,14 @@
         <figure>
           <div class="thumb" style="background-image:url('assets/thumbs/beyonce.jpg');background-size:cover;background-position:center;">
             <span class="lbl" data-zh>
-</span><span class="lbl" data-en>thumb</span>
+</span><span class="lbl" data-ja></span><span class="lbl" data-en>thumb</span>
             <span class="dur">07:41</span>
           </div>
           <figcaption>
             <div class="meta"><span>2025 · 06</span><span>VLOG</span></div>
-            <h4><span data-zh>终于见到BEYONCE</span><span data-en><em>The balcony at Shexian</em></span></h4>
+            <h4><span data-zh>终于见到BEYONCE</span><span data-ja>ついにBEYONCEに会えた</span><span data-en><em>The balcony at Shexian</em></span></h4>
             <p class="alt" data-zh>留学生活记录</p>
+            <p class="alt" data-ja>留学生活の記録</p>
             <p class="alt" data-en>安徽</p>
           </figcaption>
         </figure>
@@ -1030,13 +1071,14 @@
         <figure>
           <div class="thumb" style="background-image:url('assets/thumbs/sakamoto.jpg');background-size:cover;background-position:center;background-color:#fff;">
             <span class="lbl" data-zh>
-</span><span class="lbl" data-en>thumb</span>
+</span><span class="lbl" data-ja></span><span class="lbl" data-en>thumb</span>
             <span class="dur">14:01</span>
           </div>
           <figcaption>
             <div class="meta"><span>2021 · 03</span><span>其他</span></div>
-            <h4><span data-zh>坂本龙一</span><span data-en><em>Letters from a moving train</em></span></h4>
+            <h4><span data-zh>坂本龙一</span><span data-ja>坂本龍一</span><span data-en><em>Letters from a moving train</em></span></h4>
             <p class="alt" data-zh>Bilibili人物系列</p>
+            <p class="alt" data-ja>Bilibili 人物シリーズ</p>
             <p class="alt" data-en>上海 → 成都</p>
           </figcaption>
         </figure>
@@ -1046,13 +1088,14 @@
         <figure>
           <div class="thumb" style="background-image:url('assets/thumbs/ugly-beauty.jpg');background-size:cover;background-position:center;background-color:#fff;">
             <span class="lbl" data-zh>
-</span><span class="lbl" data-en>thumb</span>
+</span><span class="lbl" data-ja></span><span class="lbl" data-en>thumb</span>
             <span class="dur">07:09</span>
           </div>
           <figcaption>
             <div class="meta"><span>2021 · 10</span><span>其他</span></div>
-            <h4><span data-zh>Ugly Beauty</span><span data-en><em>Ten years through a long lane</em></span></h4>
+            <h4><span data-zh>Ugly Beauty</span><span data-ja>Ugly Beauty</span><span data-en><em>Ten years through a long lane</em></span></h4>
             <p class="alt" data-zh>Bilibili人物系列</p>
+            <p class="alt" data-ja>Bilibili 人物シリーズ</p>
             <p class="alt" data-en>上海 · 弄堂</p>
           </figcaption>
         </figure>
@@ -1060,7 +1103,7 @@
     </div>
 
     <p class="news-more" style="margin-top:48px;">
-      <a class="under" href="Videos.html"><span data-zh>全部影像 →</span><span data-en>all videos →</span></a>
+      <a class="under" href="Videos.html"><span data-zh>全部影像 →</span><span data-ja>すべての映像 →</span><span data-en>all videos →</span></a>
     </p>
   </div>
 </section>
@@ -1072,6 +1115,7 @@
       <div class="left">
         <h3>
           <span data-zh style="font-size: 30px">写真</span>
+          <span data-ja style="font-size: 30px">ポートレート</span>
           <span data-en>Portraits</span>
         </h3>
       </div>
@@ -1084,7 +1128,7 @@
       <a class="ph" href="works/photo-5.html" style="background-image:url('assets/photos/05.jpg');background-size:cover;background-position:center;"></a>
     </div>
     <div class="photo-strip-foot">
-      <a href="works/photos.html" class="under"><span data-zh>完整集 →</span><span data-en>see all →</span></a>
+      <a href="works/photos.html" class="under"><span data-zh>完整集 →</span><span data-ja>すべて見る →</span><span data-en>see all →</span></a>
     </div>
   </div>
 </section>
@@ -1096,10 +1140,12 @@
       <div>
         <h3 style="font-family:var(--serif-en);font-weight:400;font-size:36px;line-height:1;margin:0;letter-spacing:-0.01em;">
           <span data-zh style="font-family:var(--serif-zh)">联系<em style="font-style:italic;color:var(--ink-soft);display:block;font-size:0.5em;margin-top:8px;letter-spacing:0.04em;">Get in touch</em></span>
+          <span data-ja style="font-family:var(--serif-ja)">お問い合わせ<em style="font-style:italic;color:var(--ink-soft);display:block;font-size:0.5em;margin-top:8px;letter-spacing:0.04em;">Get in touch</em></span>
           <span data-en>Get <em style="font-style:italic;color:var(--ink-soft);">in touch</em></span>
         </h3>
         <p style="font-family:var(--serif-en);font-style:italic;color:var(--muted);max-width:30ch;margin-top:18px;font-size:14px;">
           <span data-zh style="font-family:var(--serif-zh);font-style:normal;">欢迎来信谈合作、放映或闲谈。</span>
+          <span data-ja style="font-family:var(--serif-ja);font-style:normal;">コラボレーション、上映、その他のご相談などお気軽にご連絡ください。</span>
           <span data-en>Open to letters about collaboration, screenings, or nothing in particular.</span>
         </p>
       </div>
@@ -1113,11 +1159,11 @@
           <span class="v"><a class="under" href="https://instagram.com/oldyelin">@oldyelin</a></span>
         </li>
         <li>
-          <span class="k"><span data-zh>小红书</span><span data-en>Xiaohongshu</span></span>
+          <span class="k"><span data-zh>小红书</span><span data-ja>小紅書</span><span data-en>Xiaohongshu</span></span>
           <span class="v">叶林 oldyelin</span>
         </li>
         <li>
-          <span class="k"><span data-zh>工作室</span><span data-en>Studio</span></span>
+          <span class="k"><span data-zh>工作室</span><span data-ja>スタジオ</span><span data-en>Studio</span></span>
           <span class="v">Lemona Studio</span>
         </li>
       </ul>
@@ -1125,8 +1171,8 @@
   </div>
   <div class="wrap row" style="border-top:1px solid var(--hair);padding-top:24px;padding-bottom:32px;margin-top:8px;">
     <span>© OLDYELIN</span>
-    <span><span data-zh>站点为原创设计 · 上次更新 2026.05</span><span data-en>Site by hand · last updated 2026.05</span></span>
-    <a class="under" href="#top"><span data-zh>回到顶端 ↑</span><span data-en>Back to top ↑</span></a>
+    <span><span data-zh>站点为原创设计 · 上次更新 2026.05</span><span data-ja>オリジナルデザイン · 最終更新 2026.05</span><span data-en>Site by hand · last updated 2026.05</span></span>
+    <a class="under" href="#top"><span data-zh>回到顶端 ↑</span><span data-ja>トップへ ↑</span><span data-en>Back to top ↑</span></a>
   </div>
 </footer>
 
@@ -1139,26 +1185,42 @@
     const btn = document.getElementById('lang-toggle');
     const z = btn.querySelector('.z');
     const e = btn.querySelector('.e');
+    const j = btn.querySelector('.j');
+    const ORDER = ['zh', 'en', 'ja'];
     function paint(lang){
       z.classList.toggle('on', lang === 'zh');
       z.classList.toggle('off', lang !== 'zh');
       e.classList.toggle('on', lang === 'en');
       e.classList.toggle('off', lang !== 'en');
+      j.classList.toggle('on', lang === 'ja');
+      j.classList.toggle('off', lang !== 'ja');
+    }
+    const saved = (function(){ try{ return localStorage.getItem('yl-lang'); }catch(err){ return null; } })();
+    if (saved && ORDER.includes(saved)) {
+      document.body.dataset.lang = saved;
+      document.documentElement.lang = saved;
     }
     paint(document.body.dataset.lang || 'zh');
-    btn.addEventListener('click', () => {
-      const next = document.body.dataset.lang === 'zh' ? 'en' : 'zh';
+    function set(next){
+      if (!ORDER.includes(next)) return;
       document.body.dataset.lang = next;
       document.documentElement.lang = next;
+      try{ localStorage.setItem('yl-lang', next); }catch(err){}
       paint(next);
-      // notify the tweaks panel so its select stays in sync
       window.dispatchEvent(new CustomEvent('__local_lang', {detail:{lang:next}}));
+    }
+    btn.querySelectorAll('[data-set-lang]').forEach((el) => {
+      el.addEventListener('click', () => set(el.dataset.setLang));
+      el.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); set(el.dataset.setLang); }
+      });
     });
     // Receive language changes from tweaks panel
     window.addEventListener('__tweaks_lang', (ev) => {
       const lang = ev.detail.lang;
       document.body.dataset.lang = lang;
       document.documentElement.lang = lang;
+      try{ localStorage.setItem('yl-lang', lang); }catch(err){}
       paint(lang);
     });
   })();
@@ -1186,6 +1248,12 @@
   function YeLinTweaks(){
     const [t, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
 
+    // Adopt the language the inline toggle restored from localStorage.
+    React.useEffect(() => {
+      const saved = (function(){ try{ return localStorage.getItem('yl-lang'); }catch(err){ return null; } })();
+      if (saved && saved !== t.language && ['zh','en','ja'].includes(saved)) setTweak('language', saved);
+    }, []);
+
     // Apply language to body data attribute, and let the inline toggle know.
     React.useEffect(() => {
       document.body.dataset.lang = t.language;
@@ -1211,7 +1279,8 @@
             onChange={(v) => setTweak('language', v)}
             options={[
               { value: 'zh', label: '中文' },
-              { value: 'en', label: 'EN' }
+              { value: 'en', label: 'EN' },
+              { value: 'ja', label: '日本語' }
             ]}
           />
         </window.TweakSection>
